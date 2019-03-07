@@ -88,12 +88,12 @@ public class WeatherWebApi {
         String query = latitude + "," + longitude;
         String path = WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, API_KEY);
         List<DayInfo> result = new ArrayList<>(); // where the dto.WeatherInfo instances are collected
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(new URL(path).openStream()))) {
-            while (br.readLine().startsWith("#")) ;
-            String line;
-            while ((line = br.readLine()) != null) {
-                result.add(DayInfo.valueOf(line));
-                br.readLine();
+        try{
+            Iterator<String> iterator=getContentLines(new URL(path).openStream()).iterator();
+            while(iterator.hasNext()&&iterator.next().startsWith("#"));
+            while(iterator.hasNext()) {
+                result.add(DayInfo.valueOf((iterator.next())));
+                iterator.next();
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -109,18 +109,21 @@ public class WeatherWebApi {
     public Iterable<Location> search(String location) {
         List<Location> result=new ArrayList<>();
         String path =  WEATHER_SERVICE + String.format(WEATHER_SEARCH_TEMPLATE, location, API_KEY);
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(new URL(path).openStream()))) {
+        try {
+            Iterator<String> aux = getContentLines(new URL(path).openStream()).iterator();
             String line;
-            while ((line = br.readLine())!= null) {
-                if (!line.contains("#"))
+            while (aux.hasNext()){
+                line=aux.next();
+                if (!line.contains("#")){
                     result.add(Location.valueOf(line));
+                }
             }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+
+
+        }catch (IOException e) {
+            throw new UncheckedIOException (e);
         }
-
         return result;
-
     }
 
     private Iterable<String> getContentLines(InputStream input){
