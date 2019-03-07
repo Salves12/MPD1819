@@ -89,15 +89,7 @@ public class WeatherWebApi {
         String query = latitude + "," + longitude;
         String path = WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, API_KEY);
         List<DayInfo> result = new ArrayList<>(); // where the WeatherInfo instances are collected
-
-        try {
-            // used to do the HTTP request to worldweatheronline service
-            URL url = new URL(path);
-
-            // the stream used to get the response to the service request
-            InputStream respStream = url.openStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(respStream));
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(new URL(path).openStream()))) {
 
             while (br.readLine().startsWith("#")) ;
             String line;
@@ -121,17 +113,8 @@ public class WeatherWebApi {
     public Iterable<Location> search(String location) {
         List<Location> result=new ArrayList<>();
         String path =  WEATHER_SERVICE + String.format(WEATHER_SEARCH_TEMPLATE, location, API_KEY);
-        try {
-            // used to do the HTTP request to worldweatheronline service
-            URL url = new URL(path);
-
-            // the stream used to get the response to the service request
-            InputStream respStream = url.openStream();
-
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(respStream));
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(new URL(path).openStream()))) {
             String line;
-
             while ((line = br.readLine())!= null) {
                 if (!line.contains("#"))
                     result.add(Location.valueOf(line));
@@ -146,8 +129,7 @@ public class WeatherWebApi {
 
     private Iterable<String> getContentLines(InputStream input){
         ArrayList i=new ArrayList<String>();
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
             String line;
             while ((line=br.readLine())!=null){
                 i.add(line);
