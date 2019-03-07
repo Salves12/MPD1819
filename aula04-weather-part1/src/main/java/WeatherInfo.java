@@ -37,7 +37,6 @@ public class WeatherInfo {
      */
     public static WeatherInfo valueOf(String line) {
         String[] parts = line.split(",");
-
         return new WeatherInfo(
                 LocalDate.parse(parts[DATE]),
                 Integer.parseInt(parts[TEMPC]),
