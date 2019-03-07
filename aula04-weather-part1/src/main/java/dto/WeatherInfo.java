@@ -1,3 +1,4 @@
+package dto;
 
 import java.time.LocalDate;
 
@@ -31,9 +32,9 @@ public class WeatherInfo {
     public int getFeelsLikeC() { return feelsLikeC; }
 
     /**
-     * Create a WeatherInfo from a line with csv parts
+     * Create a dto.WeatherInfo from a line with csv parts
      * @param line
-     * @return A WeatherInfo instance
+     * @return A dto.WeatherInfo instance
      */
     public static WeatherInfo valueOf(String line) {
         String[] parts = line.split(",");
@@ -47,7 +48,7 @@ public class WeatherInfo {
 
     @Override
     public  String toString() {
-        return "WeatherInfo{" +
+        return "dto.WeatherInfo{" +
                 date +
                 ", tempC=" + tempC +
                 ", '" + description + '\'' +

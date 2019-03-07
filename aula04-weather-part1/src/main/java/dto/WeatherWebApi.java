@@ -1,3 +1,4 @@
+package dto;
 
 import java.io.*;
 import java.net.URL;
@@ -39,7 +40,7 @@ public class WeatherWebApi {
     }
 
     /**
-     * Get WeatherInfo's from a GPS local given a date interval
+     * Get dto.WeatherInfo's from a GPS local given a date interval
      * @param latitude
      * @param longitude
      * @param from
@@ -51,21 +52,19 @@ public class WeatherWebApi {
         String path =  WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, API_KEY);
 
 
-        List<WeatherInfo> result = new ArrayList<>(); // where the WeatherInfo instances are collected
+        List<WeatherInfo> result = new ArrayList<>(); // where the dto.WeatherInfo instances are collected
 
         try {
-
-
            /** BufferedReader br= new BufferedReader( new InputStreamReader(respStream));
 
             while (br.readLine().startsWith("#"));
             while ((br.readLine())!=null){
                 String line =br.readLine();
-                result.add(WeatherInfo.valueOf(line));
+                result.add(dto.WeatherInfo.valueOf(line));
             }**/
 
             Iterator<String> iterator=getContentLines(new URL(path).openStream()).iterator();
-            while(iterator.next().startsWith("#"));
+            while(iterator.hasNext()&&iterator.next().startsWith("#"));
             while(iterator.hasNext()){
                 iterator.next();
                 result.add(WeatherInfo.valueOf(iterator.next()));
@@ -78,7 +77,7 @@ public class WeatherWebApi {
     }
 
     /**
-     * Get DayInfo's from a GPS local given a date interval
+     * Get dto.DayInfo's from a GPS local given a date interval
      * @param latitude
      * @param longitude
      * @param from
@@ -88,17 +87,14 @@ public class WeatherWebApi {
     public Iterable<DayInfo> pastDays( double latitude, double longitude, LocalDate from, LocalDate to) {
         String query = latitude + "," + longitude;
         String path = WEATHER_SERVICE + String.format(WEATHER_PAST_TEMPLATE, query, from, to, API_KEY);
-        List<DayInfo> result = new ArrayList<>(); // where the WeatherInfo instances are collected
+        List<DayInfo> result = new ArrayList<>(); // where the dto.WeatherInfo instances are collected
         try(BufferedReader br = new BufferedReader(new InputStreamReader(new URL(path).openStream()))) {
-
             while (br.readLine().startsWith("#")) ;
             String line;
             while ((line = br.readLine()) != null) {
                 result.add(DayInfo.valueOf(line));
                 br.readLine();
             }
-
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

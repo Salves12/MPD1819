@@ -1,3 +1,7 @@
+import dto.DayInfo;
+import dto.Location;
+import dto.WeatherInfo;
+import dto.WeatherWebApi;
 import org.junit.Assert;
 import org.junit.Test;
 

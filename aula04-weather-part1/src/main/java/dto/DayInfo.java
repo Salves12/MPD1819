@@ -1,4 +1,4 @@
-/*
+package dto;/*
    #The day information is available in following format:-
    #date,maxtempC,maxtempF,mintempC,mintempF,sunrise,sunset,moonrise,moonset,moon_phase,moon_illumination
    #2019-01-01,17,63,8,46,07:55 AM,05:26 PM,03:25 AM,02:25 PM,Waning Crescent,34
@@ -68,7 +68,7 @@ public class DayInfo {
 
     @Override
     public String toString() {
-        return "DayInfo{" +
+        return "dto.DayInfo{" +
                 "date=" + date +
                 ", maxtempC=" + maxtempC +
                 ", mintempC=" + mintempC +

@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+package dto;
 
 public class Location {
     // indexes corresponding to fields to use
@@ -44,7 +44,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Location{" +
+        return "dto.Location{" +
                 "name='" + name + '\'' +
                 ", country='" + country + '\'' +
                 ", district='" + district + '\'' +
